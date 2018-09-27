@@ -35,7 +35,7 @@ public class GildedRoseTest {
         Item[] items = {item};
         GildedRose rose = new GildedRose(items);
 
-        for (int count = 0; count <= 999999999; count++) {
+        for (int count = 0; count <= 1000; count++) {
             rose.update();
         }
 
@@ -60,7 +60,7 @@ public class GildedRoseTest {
         Item[] items = {item};
         GildedRose rose = new GildedRose(items);
 
-        for (int count = 0; count <= 999999999; count++) {
+        for (int count = 0; count <= 1000; count++) {
             rose.update();
         }
 
@@ -69,11 +69,11 @@ public class GildedRoseTest {
 
     @Test
     public void sulfrasNeverDecreases() {
-        Item sulfras = new Item("Sulfuras, Hand of Ragnaros", 20, 80);
+        Item sulfras = new Item("Sulfuras", 20, 80);
         Item[] items = {sulfras};
         GildedRose rose = new GildedRose(items);
 
-        for (int count = 0; count <= 999999999; count++) {
+        for (int count = 0; count <= 1000; count++) {
             rose.update();
         }
 
@@ -201,6 +201,20 @@ public class GildedRoseTest {
 
         assertThat(pass.sellIn).isEqualTo(4);
         assertThat(pass.quality).isEqualTo(26);
+    }
+
+    @Test
+    public void conjuredSulfrasNeverDecreases() {
+        Item sulfras = new Item("Conjured Sulfuras", 20, 80);
+        Item[] items = {sulfras};
+        GildedRose rose = new GildedRose(items);
+
+        for (int count = 0; count <= 1000; count++) {
+            rose.update();
+        }
+
+        assertThat(sulfras.sellIn).isEqualTo(20);
+        assertThat(sulfras.quality).isEqualTo(80);
     }
 
 }

@@ -13,7 +13,9 @@ class GildedRose {
             if (items[i].name.contains("Conjured")) {
                 updateQuality(i);
                 updateQuality(i);
-                items[i].sellIn = items[i].sellIn + 1;
+                if (!items[i].name.contains("Sulfuras")) {
+                    items[i].sellIn = items[i].sellIn + 1;
+                } else {}
             } else {
                 updateQuality(i);
             }
@@ -23,7 +25,7 @@ class GildedRose {
         // changed .equals() to .contains() to include all possible passes
         if (!items[i].name.contains("Aged Brie") && !items[i].name.contains("Backstage pass")) {
             if (items[i].quality > 0) {
-                if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
+                if (!items[i].name.contains("Sulfuras")) {
                     items[i].quality = items[i].quality - 1;
                 }
             }
@@ -45,15 +47,13 @@ class GildedRose {
                 }
             }
         }
-        if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
-            items[i].sellIn = items[i].sellIn - 1;
-        }
+        decreaseSellInButNotQualityIfNotSulfuras(items[i]);
         if (items[i].sellIn < 0) {
             // also change .equals() to .contains()
             if (!items[i].name.contains("Aged Brie")) {
                 if (!items[i].name.contains("Backstage pass")) {
                     if (items[i].quality > 0) {
-                        if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
+                        if (!items[i].name.contains("Sulfuras")) {
                             items[i].quality = items[i].quality - 1;
                         }
                     }
@@ -65,6 +65,12 @@ class GildedRose {
                     items[i].quality = items[i].quality + 1;
                 }
             }
+        }
+    }
+
+    private void decreaseSellInButNotQualityIfNotSulfuras(Item item) {
+        if (!item.name.contains("Sulfuras")) {
+            item.sellIn = item.sellIn - 1;
         }
     }
 }
