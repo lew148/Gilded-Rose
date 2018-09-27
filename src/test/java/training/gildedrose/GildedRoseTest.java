@@ -12,9 +12,10 @@ public class GildedRoseTest {
         Item[] items = {item};
         GildedRose rose = new GildedRose(items);
 
-        rose.updateQuality();
+        rose.update();
 
-        assert(item.sellIn == 39 && item.quality == 39);
+        assertThat(item.sellIn).isEqualTo(39);
+        assertThat(item.quality).isEqualTo(39);
     }
 
     @Test
@@ -23,9 +24,9 @@ public class GildedRoseTest {
         Item[] items = {item};
         GildedRose rose = new GildedRose(items);
 
-        rose.updateQuality();
+        rose.update();
 
-        assert(item.quality == 38);
+        assertThat(item.quality).isEqualTo(38);
     }
 
     @Test
@@ -35,10 +36,10 @@ public class GildedRoseTest {
         GildedRose rose = new GildedRose(items);
 
         for (int count = 0; count <= 999999999; count++) {
-            rose.updateQuality();
+            rose.update();
         }
 
-        assert(item.quality == 0);
+        assertThat(item.quality).isEqualTo(0);
     }
 
     @Test
@@ -47,9 +48,10 @@ public class GildedRoseTest {
         Item[] items = {item};
         GildedRose rose = new GildedRose(items);
 
-        rose.updateQuality();
+        rose.update();
 
-        assert(item.sellIn == 19 && item.quality == 41);
+        assertThat(item.sellIn).isEqualTo(19);
+        assertThat(item.quality).isEqualTo(41);
     }
 
     @Test
@@ -59,23 +61,24 @@ public class GildedRoseTest {
         GildedRose rose = new GildedRose(items);
 
         for (int count = 0; count <= 999999999; count++) {
-            rose.updateQuality();
+            rose.update();
         }
 
-        assert(item.quality <= 50);
+        assertThat(item.quality).isLessThanOrEqualTo(50);
     }
 
     @Test
     public void sulfrasNeverDecreases() {
-        Item sulfras = new Item("Sulfuras, Hand of Ragnaros", 20, 20);
+        Item sulfras = new Item("Sulfuras, Hand of Ragnaros", 20, 80);
         Item[] items = {sulfras};
         GildedRose rose = new GildedRose(items);
 
         for (int count = 0; count <= 999999999; count++) {
-            rose.updateQuality();
+            rose.update();
         }
 
-        assert(sulfras.sellIn == 20 && sulfras.quality == 20);
+        assertThat(sulfras.sellIn).isEqualTo(20);
+        assertThat(sulfras.quality).isEqualTo(80);
     }
 
     @Test
@@ -84,9 +87,10 @@ public class GildedRoseTest {
         Item[] items = {pass};
         GildedRose rose = new GildedRose(items);
 
-        rose.updateQuality();
+        rose.update();
 
-        assert(pass.sellIn == 19 && pass.quality == 21);
+        assertThat(pass.sellIn).isEqualTo(19);
+        assertThat(pass.quality).isEqualTo(21);
     }
 
     @Test
@@ -95,9 +99,10 @@ public class GildedRoseTest {
         Item[] items = {pass};
         GildedRose rose = new GildedRose(items);
 
-        rose.updateQuality();
+        rose.update();
 
-        assert(pass.sellIn == 9 && pass.quality == 22);
+        assertThat(pass.sellIn).isEqualTo(9);
+        assertThat(pass.quality).isEqualTo(22);
     }
 
     @Test
@@ -106,9 +111,10 @@ public class GildedRoseTest {
         Item[] items = {pass};
         GildedRose rose = new GildedRose(items);
 
-        rose.updateQuality();
+        rose.update();
 
-        assert(pass.sellIn == 4 && pass.quality == 23);
+        assertThat(pass.sellIn).isEqualTo(4);
+        assertThat(pass.quality).isEqualTo(23);
     }
 
     @Test
@@ -117,8 +123,84 @@ public class GildedRoseTest {
         Item[] items = {pass};
         GildedRose rose = new GildedRose(items);
 
-        rose.updateQuality();
+        rose.update();
 
-        assert(pass.quality == 0);
+        assertThat(pass.quality).isEqualTo(0);
     }
+
+//--------------------------------------------------CONJURED TESTS----------------------------------------------------//
+
+
+    @Test
+    public void conjuredQualityDecreasesAtDoubleRate(){
+        Item item = new Item("Conjured Carrot", 40, 40);
+        Item[] items = {item};
+        GildedRose rose = new GildedRose(items);
+
+        rose.update();
+
+        assertThat(item.sellIn).isEqualTo(39);
+        assertThat(item.quality).isEqualTo(38);
+    }
+
+    @Test
+    public void conjuredQualityDecreasesBy4AfterSellBy(){
+        Item item = new Item("Conjured Carrot", 0, 40);
+        Item[] items = {item};
+        GildedRose rose = new GildedRose(items);
+
+        rose.update();
+
+        assertThat(item.quality).isEqualTo(36);
+    }
+
+
+    @Test
+    public void conjuredAgedBrieIncreasesBy2InQuality(){
+        Item item = new Item("Conjured Aged Brie", 20, 40);
+        Item[] items = {item};
+        GildedRose rose = new GildedRose(items);
+
+        rose.update();
+
+        assertThat(item.sellIn).isEqualTo(19);
+        assertThat(item.quality).isEqualTo(42);
+    }
+
+    @Test
+    public void conjuredBackstagePassesIncreaseInQualityBy2(){
+        Item pass = new Item("Conjured Backstage pass", 20, 20);
+        Item[] items = {pass};
+        GildedRose rose = new GildedRose(items);
+
+        rose.update();
+
+        assertThat(pass.sellIn).isEqualTo(19);
+        assertThat(pass.quality).isEqualTo(22);
+    }
+
+    @Test
+    public void conjuredBackstagePassesQualityIncreasesBy4WhenSellInIsBelow10(){
+        Item pass = new Item("Conjured Backstage pass", 10, 20);
+        Item[] items = {pass};
+        GildedRose rose = new GildedRose(items);
+
+        rose.update();
+
+        assertThat(pass.sellIn).isEqualTo(9);
+        assertThat(pass.quality).isEqualTo(24);
+    }
+
+    @Test
+    public void conjuredBackstagePassesQualityIncreasesBy6WhenSellInIsBelow5(){
+        Item pass = new Item("Conjured Backstage pass", 5, 20);
+        Item[] items = {pass};
+        GildedRose rose = new GildedRose(items);
+
+        rose.update();
+
+        assertThat(pass.sellIn).isEqualTo(4);
+        assertThat(pass.quality).isEqualTo(26);
+    }
+
 }
